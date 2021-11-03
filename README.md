@@ -80,7 +80,7 @@ openssl req -x509 -nodes -days 5478 -newkey rsa:2048 -keyout /etc/nginx/cert.key
 cd /etc/nginx/sites-enabled
 
 # download nginx setup for adapay proxy
-wget https://github.com/g33kme/adapay/main/nginx.adapay
+wget https://github.com/g33kme/adapay/blob/main/nginx.adapay
 
 # check nginx config and restart
 service nginx configtest
@@ -117,6 +117,9 @@ With the ADAPay PHP library it's very easy to work with your cardano-wallet API.
 ### Create or Restore Cardano Wallet
 
 ```php
+// Define your URL to API
+define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
+
 /*
  * First we need to create or restore wallet on our cardano-wallet
  * Keep in mind, that the cardano-node have to be fully synced so your wallet comes up
@@ -127,6 +130,7 @@ With the ADAPay PHP library it's very easy to work with your cardano-wallet API.
  * 
  * You will get an "id" back, save this unique id to use the wallet for ADAPay
  */
+
 $wallet = ADAPAY::restoreWallet(array(
     'name' => 'adapay',
     'mnemonic' => 'that are just twenty four words that have not meaning and only for adapay as placeholder so dont try to copy this cheers adapay'
@@ -143,6 +147,9 @@ print_r($wallets)
 
 ### Create an invoice
 ```php
+// Define your URL to API
+define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
+
 /*
  * How to create an invoice
  * 
@@ -174,6 +181,9 @@ print_r($invoice)
 
 ### Verify a payment
 ```php
+// Define your URL to API
+define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
+
 /*
  * Check you invoice was paid and you got the payment to your cardano wallet
  * You can simply pass the return parameters you got from your invoice
