@@ -206,7 +206,6 @@ if($verify['waiting']) {
     
     /*
      * Payment received
-     * 
      * Do your database updates, flag invoice as paid etc ...
      */
 }

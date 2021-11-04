@@ -1,0 +1,22 @@
+{
+    "name": "g33kme/adapay",
+    "type": "library",
+    "description": "With ADAPay you can simply create invoices for cardano payments in your webshop as well as verify incoming payments",
+    "keywords": [ "cardano", "ada", "php", "payments", "ada payments", "cardano payments", "php cardano", "php cardano wallet" ],
+    "homepage": "https://geekme.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Geekme",
+            "homepage": "https://geekme.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "g33kme\\adapay\\": "source/"
+        }
+    }
+}
