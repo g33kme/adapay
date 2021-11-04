@@ -133,7 +133,7 @@ define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
 
 $wallet = ADAPAY::restoreWallet(array(
     'name' => 'adapay',
-    'mnemonic' => 'that are just twenty four words that have not meaning and only for adapay as placeholder so dont try to copy this cheers adapay'
+    'mnemonic' => 'that are just twenty four words that have no meaning and only for adapay as placeholder so dont try to copy this cheers adapay'
     'passphrase' => 'myAwesomeAdaPayPassword',
 ));
 print_r($wallet);
@@ -146,7 +146,7 @@ print_r($wallets);
 
 /*
  * List all you receiving wallet cardano addresses
- * Use one id from the list to receive your payments and create invoices
+ * Use one  from the list to receive your payments on and create invoices
  */
 $addresses = ADAPAY::walletAdresses();
 print_r($addresses);
@@ -225,5 +225,5 @@ if($verify['waiting']) {
 Stake your ADA to our pool with ticker: GEEK  
 [GeekMe Stake Pool](https://adapools.org/pool/c13debc5c24d045cf5e2d69c33ff981602ae55d8bded995a6d930836)  
 
-☕ Wanna buy us a coffee or two? Send some ADA to our donation address: 
+☕ Wanna buy me a coffee or two? Send some ADA to our donation address: 
 addr1qxksn95zhgje7tvdsgfpk9t49sssz4fqewt74neh56cnl4ml8zpc3556jh8exfp70a6f3pva7yf4fmfmw52tdh3dh94sqdvu27
