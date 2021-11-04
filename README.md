@@ -111,8 +111,26 @@ composer require g33kme/adapay
 
 This library requires PHP 7.1 or later and if you use Composer you need Version 2+.
 
+You can also simply manually include `source/adapay.php` from this repository to your project and use the ADAPay PHP Class.
+
+```php
+include('path/to/my/adapay.php');
+```
+
 ## How to use ADApay
 With the ADAPay PHP library it's very easy to work with your cardano-wallet API. Check your wallet, craete invoices, check receiving payments ...
+
+```php
+/*
+ * You have to setup some Settings
+ */
+
+// Define your URL to API, with version, but NO ending slash!
+define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
+
+//Optional, you can define an walletid, but you can also pass a walletid in the parameters
+define('ADAPAY_WALLETID', '129328d18339990c7398e02975c4513754881337');
+```
 
 ### Create or Restore Cardano Wallet
 
@@ -150,7 +168,6 @@ print_r($wallets);
  */
 $addresses = ADAPAY::walletAdresses();
 print_r($addresses);
-
 ```
 
 ### Create an invoice
@@ -175,14 +192,14 @@ $invoice = ADAPAY::invoiceCreate(array(
         'type' => 'amount'
    ), 
    'death' => 1800,
-   'address' => '',
-   'walletid' => '' 
+   'address' => 'addr1qxksn95zhgje7tvdsgfpk9t49sssz4fqewt74neh56cnl4ml8zpc3556jh8exfp70a6f3pva7yf4fmfmw52tdh3dh94sqdvu27',
+   'walletid' => '129328d18339990c7398e02975c4513754881337' 
 ));
 print_r($invoice);
 
 /*
- * Each created cardano invoice return an unique hash
- * We recommend to save your invoice in a database
+ * Each created cardano invoice return an unique hash and the calculated ADA price from your fiat amount
+ * We recommend to save your invoice in a database to flag them as paid if you received it
  */
 
 ```
@@ -194,7 +211,7 @@ define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
 
 /*
  * Check you invoice was paid and you got the payment to your cardano wallet
- * You can simply pass the return parameters you got from your invoice
+ * You can simply pass the return parameters you got in your $invoice
  * 
  */
 $verify = ADAPAY::verifyPayment(array(
@@ -204,6 +221,10 @@ $verify = ADAPAY::verifyPayment(array(
    'created' => $invoice['created'],
    'death' => $invoice['death']
 ));
+print_r($verify);
+
+//Or simply pass the $invoice you created
+$verify = ADAPAY::verifyPayment($invoice);
 print_r($verify);
 
 
@@ -219,6 +240,29 @@ if($verify['waiting']) {
 }
 ```
 
+### Get current ADA rates by EUR, USD, GBP ...
+```php
+# Get last cardano fiat price, via a pair like: ADAEUR, ADAUSD, ADAGBP ...
+$lastPrice = ADAPAY::lastPrice(array('pair' => 'ADAEUR'));
+print_r($lastPrice);
+
+$fiat = 10;
+$ada = $fiat / $lastPrice;
+echo $fiat.' EUR are currently '.$ada.' ADA';
+
+# Get last price in EURO
+$lastPriceEuro = ADAPAY::lastPriceEuro();
+print_r($lastPriceEuro);
+
+# Get last price in Dollar
+$lastPriceDollar = ADAPAY::lastPriceDollar();
+print_r($lastPriceDollar);
+
+# Get last price in British Pound
+$lastPricePound = ADAPAY::lastPricePound();
+print_r($lastPricePound);
+
+```
 
 ## 🙏 Supporters
 

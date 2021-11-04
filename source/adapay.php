@@ -98,6 +98,9 @@ class ADAPAY {
      */
     public static function invoiceCreate($x=false) {
 
+        $walletId = !empty($x['walletid']) ? $x['walleid'] : ADAPAY_WALLETID;
+        $stop[] = empty($walletId) ? 'No valid wallet id' : false;
+
         //Check if Adapay server is available
 		$stop[] = !ADAPAY::serverAlive() ? 'Paying with ADA is currently not possible, server is not alive' : false;
 
