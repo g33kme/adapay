@@ -95,7 +95,7 @@ https://<IP4-SERVER-ADDRESS>/v2/network/information
 ```
 
 You may also take care to update your firewall settings and block public traffic for Port 443.
-
+  
 
 ## 2. Installation: ADAPay
 
@@ -107,17 +107,18 @@ This library is installable via [Composer](https://getcomposer.org/):
 composer require g33kme/adapay
 ```
 
-## Requirements
-
-This library requires PHP 7.1 or later and if you use Composer you need Version 2+.
-
 You can also simply manually include `source/adapay.php` from this repository to your project and use the ADAPay PHP Class.
 
 ```php
 include('path/to/my/adapay.php');
 ```
 
-## How to use ADApay
+## Requirements
+
+This library requires PHP 7.1 or later and if you use Composer you need Version 2+.
+
+
+## 3. How to use ADApay
 With the ADAPay PHP library it's very easy to work with your cardano-wallet API. Check your wallet, craete invoices, check receiving payments ...
 
 ```php
@@ -168,6 +169,13 @@ print_r($wallets);
  */
 $addresses = ADAPAY::walletAdresses();
 print_r($addresses);
+
+/*
+ * Check current network Status, Cardano Node height
+ */
+$networkStatus = ADAPAY::networkStatus();
+print_r($networkStatus);
+
 ```
 
 ### Create an invoice
@@ -184,6 +192,12 @@ define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
  * death    = in seconds when the invoice expires
  * address  = set one of your cardano addresses from your created wallet where you want to receive the payment
  * walletid = set a walletid from your cardano-wallet you created in the first step
+ * 
+ * Each created cardano invoice return an unique hash and the calculated ADA price from your fiat amount
+ * We recommend to save your invoice in a database to flag them as paid if you received it
+ * 
+ * Currently ADAPay will create an unique number on the payment amount to identify incoming payment
+ * Creating a new Cardano addresse for each invoice is currently not easy with the Cardano Wallet API, we may provide this in the future 
  */
 $invoice = ADAPAY::invoiceCreate(array(
    'pair' => 'ADAUSD',
@@ -196,12 +210,6 @@ $invoice = ADAPAY::invoiceCreate(array(
    'walletid' => '129328d18339990c7398e02975c4513754881337' 
 ));
 print_r($invoice);
-
-/*
- * Each created cardano invoice return an unique hash and the calculated ADA price from your fiat amount
- * We recommend to save your invoice in a database to flag them as paid if you received it
- */
-
 ```
 
 ### Verify a payment
@@ -261,8 +269,41 @@ print_r($lastPriceDollar);
 # Get last price in British Pound
 $lastPricePound = ADAPAY::lastPricePound();
 print_r($lastPricePound);
-
 ```
+
+### More stuff
+```php
+
+//Inspect a single cardano address
+$inspect = ADAPAY::addressInspect(array('id' => 'addr1qxksn95zhgje7tvdsgfpk9t49sssz4fqewt74neh56cnl4ml8zpc3556jh8exfp70a6f3pva7yf4fmfmw52tdh3dh94sqdvu27'));
+print_r($inspect);
+
+/*
+ * List all sent and receive transaction on your wallet
+ * 
+ * id       = Set one of your wallet ids
+ * start    = Optional, set a start date in ISO8601
+ * end      = Optional, set an end date in ISO8601
+ */
+$transactions = ADAPAY::walletTransactions(array(
+    'id' => '129328d18339990c7398e02975c4513754881337',
+
+    //List all transaction for walletid in the last hour
+    'start' => date(DATE_ISO8601, time()-3600)
+));
+print_r($transactions);
+```
+
+## Best practice and recommendations
+
+* For best privacy, run your own cardano node and never ever give out your recovery phrase to any third party server!
+
+
+* You can restore the same wallet you created on your server on [Deadalus Wallet](https://daedaluswallet.io/). If you have your wallet in Deadalus you can see incoming transaction and managing your wallet will be easier, e.g if you want to send some refunds to your customer or see more details.
+
+
+* Stake and delegate your earned ADA to our Ticker: **GEEK** and receive extra money for your staking! If you delegated to our **GEEK** Stake Pool all ongoing received payments will be automatically staked. If your wallet grow your stake amount grow automatically and you earn more money. 
+You easily delegate your ADA in Deadalus Wallet. So simple restore your created wallet on Deadalus too as we mentioned above.
 
 ## 🙏 Supporters
 
