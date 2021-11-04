@@ -106,6 +106,9 @@ class ADAPAY {
 
         $stop[] = (!is_numeric($x['amount']) || $x['amount'] <=0) ? 'No valid fiat amount to create invoice for pair: '.$x['pair'] : false;
 
+        $stop[] = empty($x[address]) ? 'Please set a cardano address' : false;
+        $stop[] = (!is_int($x[death]) || $x[death] <=0) ? 'Please set a valid death in seconds, when your invoice expires' : false;
+
         if(empty($x['identify']) OR $x['identify']['type'] == 'amount') {
 
             if(empty($x['identify']['start'])) {

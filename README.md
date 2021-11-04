@@ -4,7 +4,7 @@ You need to run a [cardano-wallet](https://github.com/input-output-hk/cardano-wa
 
 With ADAPay you can simply create invoices for cardano payments in your webshop as well as verify the incoming payments.
 
-Help us improve this project by staking your ADA to our pool with ticker: **GEEK**  
+🙏 Help us improve this project by staking your ADA to our pool with ticker: **GEEK**  
 [GeekMe Stake Pool](https://adapools.org/pool/c13debc5c24d045cf5e2d69c33ff981602ae55d8bded995a6d930836)
 
 
@@ -80,7 +80,7 @@ openssl req -x509 -nodes -days 5478 -newkey rsa:2048 -keyout /etc/nginx/cert.key
 cd /etc/nginx/sites-enabled
 
 # download nginx setup for adapay proxy
-wget https://github.com/g33kme/adapay/blob/main/nginx.adapay
+wget https://raw.githubusercontent.com/g33kme/adapay/main/nginx.adapay
 
 # check nginx config and restart
 service nginx configtest
@@ -109,7 +109,7 @@ composer require g33kme/adapay
 
 ## Requirements
 
-This library requires PHP 7.1 or later.
+This library requires PHP 7.1 or later and if you use Composer you need Version 2+.
 
 ## How to use ADApay
 With the ADAPay PHP library it's very easy to work with your cardano-wallet API. Check your wallet, craete invoices, check receiving payments ...
@@ -121,7 +121,7 @@ With the ADAPay PHP library it's very easy to work with your cardano-wallet API.
 define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
 
 /*
- * First we need to create or restore wallet on our cardano-wallet
+ * First we need to create or restore a wallet on our cardano-wallet server
  * Keep in mind, that the cardano-node have to be fully synced so your wallet comes up
  * 
  * name              = set any name 
@@ -136,13 +136,21 @@ $wallet = ADAPAY::restoreWallet(array(
     'mnemonic' => 'that are just twenty four words that have not meaning and only for adapay as placeholder so dont try to copy this cheers adapay'
     'passphrase' => 'myAwesomeAdaPayPassword',
 ));
-print_r($wallet)
+print_r($wallet);
 
 /*
  * If you already created a wallet you can simply show all created wallets and grab your walletid
  */
 $wallets = ADAPAY::wallets(array();
-print_r($wallets)
+print_r($wallets);
+
+/*
+ * List all you receiving wallet cardano addresses
+ * Use one id from the list to receive your payments and create invoices
+ */
+$addresses = ADAPAY::walletAdresses();
+print_r($addresses);
+
 ```
 
 ### Create an invoice
@@ -157,7 +165,7 @@ define('ADAPAY_API', 'http://<IP4-SERVER-ADDRESS>:8090/v2');
  * amount   = fiat amount, based on the pair your ada amount for the invoice will be calculated
  * identify = how to identify the paid invoice
  * death    = in seconds when the invoice expires
- * address  = set one of your cardano addresses where you want to receive the payment
+ * address  = set one of your cardano addresses from your created wallet where you want to receive the payment
  * walletid = set a walletid from your cardano-wallet you created in the first step
  */
 $invoice = ADAPAY::invoiceCreate(array(
@@ -170,7 +178,7 @@ $invoice = ADAPAY::invoiceCreate(array(
    'address' => '',
    'walletid' => '' 
 ));
-print_r($invoice)
+print_r($invoice);
 
 /*
  * Each created cardano invoice return an unique hash
@@ -196,7 +204,7 @@ $verify = ADAPAY::verifyPayment(array(
    'created' => $invoice['created'],
    'death' => $invoice['death']
 ));
-print_r($verify)
+print_r($verify);
 
 
 if($verify['waiting']) {
@@ -215,4 +223,7 @@ if($verify['waiting']) {
 ## 🙏 Supporters
 
 Stake your ADA to our pool with ticker: GEEK  
-[GeekMe Stake Pool](https://adapools.org/pool/c13debc5c24d045cf5e2d69c33ff981602ae55d8bded995a6d930836)
+[GeekMe Stake Pool](https://adapools.org/pool/c13debc5c24d045cf5e2d69c33ff981602ae55d8bded995a6d930836)  
+
+☕ Wanna buy us a coffee or two? Send some ADA to our donation address: 
+addr1qxksn95zhgje7tvdsgfpk9t49sssz4fqewt74neh56cnl4ml8zpc3556jh8exfp70a6f3pva7yf4fmfmw52tdh3dh94sqdvu27
