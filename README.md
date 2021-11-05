@@ -314,6 +314,9 @@ You easily delegate your ADA in Deadalus Wallet. So simple restore your created 
 * Create a second wallet directly in Deadalus Wallet and send some payments to some address in your created ADAPay wallet to test your setup.
 
 
+* Create a database table for your created invoices for your users, so you can flag your invoices as "paid". Also if you have connected all of your database entries to one of your user's you can easily show them a list of invoices that are paid, waiting or expired.
+
+
 * You can use a Javascript setInterval function with an ajax request that check ADAPAY::verifyPayment(); Keep in mind that you should flag your created invoice with status "paid" in a database and only use ADAPAY::verifyPayment(); if you did not yet flag the entry as "paid".
 ```javascript
 <script>
