@@ -575,11 +575,11 @@ class ADAPAY {
 		foreach($_REQUEST as $key => $value) {
 			if(is_array($value)) {
 
-				foreach($value as $key => $value) {
+				foreach($value as $k => $v) {
 
-					$valueClean = trim(strip_tags($value));
+					$valueClean = trim(strip_tags($v));
 					$valueClean = addslashes($valueClean);
-					$done[$key] = $valueClean;
+					$done[$k] = $valueClean;
 				}
 
 			} else {

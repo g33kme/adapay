@@ -353,15 +353,15 @@ var invoiceStatus = setInterval(function(){
 
 //Highly recommend to clean your parameter requests, ADAPay will help
 include('path/to/my/adapay.php');
-ADAPAY::cleanRequest();
+$request = ADAPAY::cleanRequest();
 
 //Now you should be save to use the parameters from your request
-print_r($_REQUEST);
+print_r($request);
 
-$hash = $_REQUEST['hash'];
-$id = $_REQUEST['id'];
-$param2 = $_REQUEST['param2'];
-$param3 = $_REQUEST['param3'];
+$hash = $request['hash'];
+$id = $request['id'];
+$param2 = $request['param2'];
+$param3 = $request['param3'];
 
 //First get your created invoice from your database maybe from your set parameters in your Javascript Ajax request
 //TODO
