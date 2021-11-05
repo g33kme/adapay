@@ -45,6 +45,10 @@ wget https://raw.githubusercontent.com/input-output-hk/cardano-wallet/master/doc
 
 # Start cardano-wallet in Background
 NETWORK=mainnet docker-compose up -d
+
+# Or if your prefer to run your node on testnet you can do:
+# NETWORK=testnet docker-compose up -d
+
 ```
 
 When your cardano-wallet is up running `NETWORK=mainnet docker-compose up -d` ou can simply check in your Browser the height of the Cardano Blockchain by requesting the following URL:  
