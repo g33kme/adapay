@@ -239,12 +239,17 @@ print_r($verify);
 if($verify['waiting']) {
     //Still waiting for the payment, not received
     
-} else {
+} 
+elseif($verify['expired']) {
+    //Invoice is expired
     
-    /*
+}
+elseif($verify['paid']) {
+     /*
      * Payment received
      * Do your database updates, flag invoice as paid etc ...
      */
+    
 }
 ```
 
@@ -304,6 +309,79 @@ print_r($transactions);
 
 * Stake and delegate your earned ADA to our Ticker: **GEEK** and receive extra money for your staking! If you delegated to our **GEEK** Stake Pool all ongoing received payments will be automatically staked. If your wallet grow your stake amount grow automatically and you earn more money. 
 You easily delegate your ADA in Deadalus Wallet. So simple restore your created wallet on Deadalus too as we mentioned above.
+
+
+* Create a second wallet directly in Deadalus Wallet and send some payments to some address in your created ADAPay wallet to test your setup.
+
+
+* You can use a Javascript setInterval function with an ajax request that check ADAPAY::verifyPayment(); Keep in mind that you should flag your created invoice with status "paid" in a database and only use ADAPAY::verifyPayment(); if you did not yet flag the entry as "paid".
+```javascript
+<script>
+var invoiceStatus = setInterval(function(){
+    //need jQuery, you can set any params you want to pass
+    $.post("/path/to/your/ajax.php?hash=<?=$invoice['hash];?>&param2=userid&id=dbid&param3=anything", {}, function(data){
+
+        console.info('invoice status: '+ data);
+        //if data empty valid invoice but not expired or paid
+
+        if(data == 'paid') {
+            //Do some stuff, eg hide some loader indicator 
+        }
+        if(data == 'waiting') {
+            //Do some stuff
+        }
+        if(data == 'expired') {
+            //Do some stuff, eg show messages invoice expired
+        }
+    });
+}, 3000);
+</script>
+```
+
+```php
+/*
+ * This is some basic example on your ajax.php
+ * Of course you can do your checks however you want
+ */
+
+//Highly recommend to clean your parameter requests, ADAPay will help
+include('path/to/my/adapay.php');
+ADAPAY::cleanRequest();
+
+//Now you should be save to use the parameters from your request
+print_r($_REQUEST);
+
+$hash = $_REQUEST['hash'];
+$id = $_REQUEST['id'];
+$param2 = $_REQUEST['param2'];
+$param3 = $_REQUEST['param3'];
+
+//First get your created invoice from your database maybe from your set parameters in your Javascript Ajax request
+//TODO
+
+//Check invoice from DB
+if(!empty($invoice)) {
+    if($invoice['paid']) {
+        echo 'paid';
+    } else {
+        $status = ADAPAY::verifyPayment();
+        
+        if($status['waiting']) {
+            echo 'waiting';
+        }
+        elseif($status['expired']) {
+            echo 'expired';
+        }
+        else($status['paid']) {
+            echo 'paid';
+            
+            //Highly recommend to update your created invoice in
+            //TODO
+ 
+        }
+    }
+}
+```
 
 ## 🙏 Supporters
 

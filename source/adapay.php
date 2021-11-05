@@ -35,7 +35,19 @@ class ADAPAY {
 
 		$stop = ADAPAY::cleanStop($stop);
 		if(!empty($stop)) {
-		    print_r($stop);
+
+		    //print_r($stop);
+
+		    return array(
+		        'stop' => $stop,
+		        'expired' => $elapsed ? true : false,
+		        'waiting' => false,
+		        'received' => false,
+		        'paid' => false,
+                'ada' => $ada,
+                'adalovelace' => $adaLovelace
+		    );
+
 		} else {
 
             //Checking latest Transaction with exact amomunt
@@ -67,6 +79,7 @@ class ADAPAY {
                     'hash' => $x['hash'],
                     'waiting' => true,
                     'received' => false,
+                    'paid' => false,
                     'ada' => $ada,
                     'adalovelace' => $adaLovelace
                 );
@@ -82,6 +95,7 @@ class ADAPAY {
                     'hash' => $x['hash'],
                     'waiting' => false,
                     'received' => true,
+                    'paid' => true,
                     'ada' => $ada,
                     'adalovelace' => $adaLovelace
                 );
@@ -131,7 +145,10 @@ class ADAPAY {
 
         $stop = ADAPAY::cleanStop($stop);
 		if(!empty($stop)) {
-		    print_r($stop);
+		    //print_r($stop);
+		    return array(
+		        'stop' => $stop
+		    );
 		} else {
 
             $ada = $x['amount'] / $lastPrice;
@@ -552,6 +569,30 @@ class ADAPAY {
        return $rand;
     }
 
+    public static function cleanRequest() {
+
+		$done = array();
+		foreach($_REQUEST as $key => $value) {
+			if(is_array($value)) {
+
+				foreach($value as $key => $value) {
+
+					$valueClean = trim(strip_tags($value));
+					$valueClean = addslashes($valueClean);
+					$done[$key] = $valueClean;
+				}
+
+			} else {
+
+				$valueClean = trim(strip_tags($value));
+				$valueClean = addslashes($valueClean);
+				$done[$key] = $valueClean;
+
+			}
+		}
+		return $done;
+
+	}
 
 }
 ?>
