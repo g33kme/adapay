@@ -49,6 +49,9 @@ NETWORK=mainnet docker-compose up -d
 # Or if your prefer to run your node on testnet you can do:
 # NETWORK=testnet docker-compose up -d
 
+# check docker status
+docker ps
+
 ```
 
 When your cardano-wallet is up running `NETWORK=mainnet docker-compose up -d` ou can simply check in your Browser the height of the Cardano Blockchain by requesting the following URL:  
@@ -62,6 +65,23 @@ It may take some time, maybe 1-2 days tilly our cardano-wallet is synced complet
 ```json
 {"network_tip":{"time":"2021-11-02T17:01:09Z","epoch_number":300,"absolute_slot_number":44306178,"slot_number":69378},"node_era":"alonzo","node_tip":{"height":{"quantity":6450485,"unit":"block"},"time":"2021-11-02T17:00:44Z","epoch_number":300,"absolute_slot_number":44306153,"slot_number":69353},"sync_progress":{"status":"ready"},"next_epoch":{"epoch_start_time":"2021-11-06T21:44:51Z","epoch_number":301}}
 ````
+
+ℹ **Good to know**
+
+If you down composer with `NETWORK=mainnet docker-compose down` and up with `NETWORK=mainnet docker-compose up` the cardano node maybe rebuilding its ledger DB, which can take a very long time. 
+Cardano-Node only creates the socket file after this rebuild has finished. You can only connect to the API when the socket file was created. 
+
+Or you can simply do a clean-up of your docker with
+```bash
+NETWORK=mainnet docker-compose down
+docker rm -f $(docker ps -a -q)
+docker volume rm -f $(docker volume ls -q)
+docker image rm -f $(docker image ls -q)
+NETWORK=mainnet docker-compose up
+```
+
+Then your API is running immediately, however you have to wait some hour that your node height is synced.
+
 
 ⭕ **Very important!**  
 
